@@ -37,10 +37,6 @@ func SearchBooks(c *gin.Context) {
 		resp.Result(resp.Error, "Failed to query books", nil, c)
 		return
 	}
-	if totalRows == 0 {
-		resp.Result(resp.NotFound, "Book not found", nil, c)
-		return
-	}
 	data := structs.Pagination{
 		TotalRows: totalRows,
 		Data:      userList,
@@ -50,10 +46,22 @@ func SearchBooks(c *gin.Context) {
 
 // QueryBooksList 查询某个用户添加的所有书籍
 func QueryBooksList(c *gin.Context) {
-
+	userID := middleware.GetUserID(c)
+	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "-1"))
+	pageNum, _ := strconv.Atoi(c.DefaultQuery("pageNum", "-1"))
+	totalRows, bookList, err := service.QueryBooksList(userID, pageNum, pageSize)
+	if err != nil {
+		resp.Result(resp.Error, "Failed to query books", nil, c)
+	}
+	data := structs.Pagination{
+		TotalRows: totalRows,
+		Data:      bookList,
+	}
+	resp.Result(resp.Success, "Book query successful", data, c)
 }
 
 // DeleteBook 删除某本书
+// 根据书籍表的主键来判断删除那本书
 func DeleteBook(c *gin.Context) {
 	bookId, _ := strconv.Atoi(c.Param("id"))
 	if err := service.DeleteBook(bookId); err != nil {
