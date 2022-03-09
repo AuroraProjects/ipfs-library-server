@@ -39,6 +39,14 @@ func CheckUserExist(username string) (userExist bool) {
 	return false
 }
 
+// UpdateUser 更新用户信息
+func UpdateUser(id int, u models.User) error {
+	if err := global.DB.Model(&models.User{}).Where("id = ?", id).Save(u).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // QueryUserList TODO: 查询所有用户 此方法需要重写
 func QueryUserList(pageSize int, pageNum int) (int64, []models.User, error) {
 	var totalRows int64

@@ -1,11 +1,11 @@
 package config
 
 type Mysql struct {
-	Host     string `json:"host" yaml:"host"`
-	Port     string `json:"port" yaml:"port"`
-	DBName   string `json:"dbName" yaml:"dbName"`
-	Username string `json:"username" yaml:"username"`
-	Password string `json:"password" yaml:"password"`
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	DBName   string `yaml:"dbName"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
 }
 
 func (m *Mysql) Dsn() string {
