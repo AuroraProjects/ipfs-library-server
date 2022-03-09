@@ -10,3 +10,6 @@ jwt:
   exp: 3600
   iss: "ipfs-library-server"
   signKey: "qaz123wsx345edc678rfv890"
+ipfs:
+  api: "localhost:5001"
+  outDir: "./"
